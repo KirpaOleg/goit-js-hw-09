@@ -10,7 +10,7 @@ const changeBgcBody = () => {
   bodyEl.style.backgroundColor = getRandomHexColor();
 };
 
-let timer = 0;
+let timer = null;
 stopEl.disabled = true;
 
 const onClickStartBtn = () => {
