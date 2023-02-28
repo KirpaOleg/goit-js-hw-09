@@ -15,15 +15,18 @@ stopEl.disabled = true;
 
 const onClickStartBtn = () => {
   timer = setInterval(changeBgcBody, 1000);
-  startEl.disabled = true;
-  stopEl.disabled = false;
+  btnDisabled(startEl, stopEl);
 };
 
 const onClickStopBtn = () => {
-  startEl.disabled = false;
-  stopEl.disabled = true;
+  btnDisabled(stopEl, startEl);
   clearInterval(timer);
 };
+
+function btnDisabled(start, stop) {
+  start.disabled = true;
+  stop.disabled = false;
+}
 
 startEl.addEventListener('click', onClickStartBtn);
 stopEl.addEventListener('click', onClickStopBtn);

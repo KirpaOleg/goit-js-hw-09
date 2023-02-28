@@ -26,7 +26,6 @@ const labelEl = document.querySelectorAll('.label').forEach(el => {
 });
 
 btnEl.disabled = true;
-let userDate = null;
 
 function convertMs(ms) {
   const second = 1000;
@@ -45,17 +44,24 @@ function pad(value) {
   return String(value).padStart(2, '0');
 }
 
+function countTime(components) {
+  secEl.textContent = components.seconds;
+  minEl.textContent = components.minutes;
+  hoursEl.textContent = components.hours;
+  daysEl.textContent = components.days;
+}
+
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onClose(selectedDates) {
-    if (selectedDates[0] < Date.now()) {
+  onClose([selectedDates]) {
+    if (selectedDates < Date.now()) {
+      console.log('selectedDates:', selectedDates);
       Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       btnEl.disabled = false;
-      userDate = selectedDates[0];
     }
   },
 };
@@ -72,13 +78,9 @@ class Timer {
     btnEl.disabled = true;
     this.timerId = setInterval(() => {
       const currentTime = Date.now();
-      const deltaTime = userDate - currentTime;
+      const deltaTime = new Date(inputEl.value) - currentTime;
       const components = convertMs(deltaTime);
-      secEl.textContent = components.seconds;
-      minEl.textContent = components.minutes;
-      hoursEl.textContent = components.hours;
-      daysEl.textContent = components.days;
-
+      countTime(components);
       if (deltaTime <= 999) {
         Notiflix.Notify.info('Time is over!');
         clearInterval(this.timerId);
